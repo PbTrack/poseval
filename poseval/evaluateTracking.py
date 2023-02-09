@@ -56,7 +56,6 @@ def computeMetrics(gtFramesAll, motAll, outputDir, bSaveAll, bSaveSeq):
     names['15'] = 'total'
 
     for si in range(nSeq):
-        print("seqidx: %d/%d" % (si+1,nSeq))
 
         # init per-joint metrics accumulator
         accAll = {}
