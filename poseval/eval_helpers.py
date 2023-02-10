@@ -159,6 +159,21 @@ def printTable(vals,motHeader=False):
     print(row)
     return header+"\n", row+"\n"
 
+def metrics2dict(vals):
+    cum = getCum(vals)
+    return {
+        "MOTA": cum[7],
+        "MOTP": cum[8],
+        "Precision": cum[9],
+        "Recall": cum[10],
+        "MOTA Head": cum[0],
+        "MOTA Shou": cum[1],
+        "MOTA Elb": cum[2],
+        "MOTA Wri": cum[3],
+        "MOTA Hip": cum[4],
+        "MOTA Knee": cum[5],
+        "MOTA Ankl": cum[6],
+    }
 
 def printTableTracking(valsPerPart):
 
