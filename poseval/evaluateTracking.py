@@ -66,7 +66,6 @@ def computeMetrics(gtFramesAll, motAll, outputDir, bSaveAll, bSaveSeq):
         imgidxs = np.argwhere(seqidxs == seqidxsUniq[si])
         imgidxs = imgidxs[:-1].copy()
         seqName = gtFramesAll[imgidxs[0,0]]["seq_name"]
-        print(seqName)
         # create an accumulator that will be updated during each frame
         # iterate over frames
         for j in range(len(imgidxs)):
