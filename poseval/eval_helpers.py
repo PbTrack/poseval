@@ -375,14 +375,14 @@ def removeRectsWithoutPoints(rects):
   rects = [rects[ridx] for ridx in idxsPr]
   return rects
 
-def load_data_dir(argv):
+def load_data_dir(argv, seqs):
 
   gt_dir, pred_dir, mode = process_arguments(argv)
   if not os.path.exists(gt_dir):
     help('Given GT directory ' + gt_dir + ' does not exist!\n')
   if not os.path.exists(pred_dir):
     help('Given prediction directory ' + pred_dir + ' does not exist!\n')
-  filenames = glob.glob(gt_dir + "/*.json")
+  filenames = [os.path.join(gt_dir, seq + ".json") for seq in seqs]
   gtFramesAll = []
   prFramesAll = []
 
