@@ -570,10 +570,8 @@ def cli(in_fp, out_fp="converted"):
     old_to_new = False
     if "annolist" in first_track.keys():
         old_to_new = True
-        LOGGER.info("Detected PoseTrack17 format. Converting to 2018...")
     else:
         assert "images" in first_track.keys(), "Unknown image format. :("
-        LOGGER.info("Detected PoseTrack18 format. Converting to 2017...")
 
     videos = []
     LOGGER.info("Parsing data...")

@@ -159,11 +159,49 @@ def printTable(vals,motHeader=False):
     print(row)
     return header+"\n", row+"\n"
 
-def metrics2dict(vals):
+def mapmetrics2dict(vals):
+    cum = getCum(vals)
+    return {
+        "mAP": cum[7],
+        "mAP Head": cum[0],
+        "mAP Shou": cum[1],
+        "mAP Elb": cum[2],
+        "mAP Wri": cum[3],
+        "mAP Hip": cum[4],
+        "mAP Knee": cum[5],
+        "mAP Ankl": cum[6],
+    }
+
+def precmetrics2dict(vals):
+    cum = getCum(vals)
+    return {
+        "precision": cum[7],
+        "precision Head": cum[0],
+        "precision Shou": cum[1],
+        "precision Elb": cum[2],
+        "precision Wri": cum[3],
+        "precision Hip": cum[4],
+        "precision Knee": cum[5],
+        "precision Ankl": cum[6],
+    }
+
+def recallmetrics2dict(vals):
+    cum = getCum(vals)
+    return {
+        "mAP": cum[7],
+        "recall Head": cum[0],
+        "recall Shou": cum[1],
+        "recall Elb": cum[2],
+        "recall Wri": cum[3],
+        "recall Hip": cum[4],
+        "recall Knee": cum[5],
+        "recall Ankl": cum[6],
+    }
+
+def motmetrics2dict(vals):
     cum = getCum(vals)
     return {
         "MOTA": cum[7],
-        "MOTP": cum[8],
         "Precision": cum[9],
         "Recall": cum[10],
         "MOTA Head": cum[0],
@@ -173,6 +211,7 @@ def metrics2dict(vals):
         "MOTA Hip": cum[4],
         "MOTA Knee": cum[5],
         "MOTA Ankl": cum[6],
+        "MOTP": cum[8],
     }
 
 def printTableTracking(valsPerPart):
