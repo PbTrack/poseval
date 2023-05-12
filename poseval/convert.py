@@ -604,11 +604,11 @@ def convert_videos(track_data):
     """Convert between PoseTrack18 and PoseTrack17 format."""
     if "annolist" in track_data.keys():
         old_to_new = True
-        LOGGER.info("Detected PoseTrack17 format. Converting to 2018...")
+        #LOGGER.info("Detected PoseTrack17 format. Converting to 2018...")
     else:
         old_to_new = False
         assert "images" in track_data.keys(), "Unknown image format. :("
-        LOGGER.info("Detected PoseTrack18 format. Converting to 2017...")
+        #LOGGER.info("Detected PoseTrack18 format. Converting to 2017...")
 
     if (old_to_new):
         videos = Video.from_old(track_data)
