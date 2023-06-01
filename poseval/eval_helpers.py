@@ -202,8 +202,7 @@ def motmetrics2dict(vals):
     cum = getCum(vals)
     return {
         "MOTA": cum[7],
-        "Precision": cum[9],
-        "Recall": cum[10],
+        "MOTP": cum[8],
         "MOTA Head": cum[0],
         "MOTA Shou": cum[1],
         "MOTA Elb": cum[2],
@@ -211,7 +210,11 @@ def motmetrics2dict(vals):
         "MOTA Hip": cum[4],
         "MOTA Knee": cum[5],
         "MOTA Ankl": cum[6],
-        "MOTP": cum[8],
+        "Precision": cum[9],
+        "Recall": cum[10],
+        "Num Misses": cum[11],
+        "Num Switches": cum[12],
+        "Num False Positives": cum[13],
     }
 
 def printTableTracking(valsPerPart):

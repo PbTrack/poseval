@@ -24,7 +24,7 @@ def computeMetrics(gtFramesAll, motAll, outputDir, bSaveAll, bSaveSeq):
     metricsMidNames = ['num_misses', 'num_switches', 'num_false_positives', 'num_objects', 'num_detections']
 
     # final metrics computed from intermediate metrics
-    metricsFinNames = ['mota','motp','pre','rec']
+    metricsFinNames = ['mota','motp','pre','rec','num_misses','num_switches','num_false_positives']
 
     # initialize intermediate metrics
     metricsMidAll = {}
@@ -135,16 +135,24 @@ def computeMetrics(gtFramesAll, motAll, outputDir, bSaveAll, bSaveSeq):
             metricsSeqAll[si]['pre'][0,nJoints]  = metricsSeqAll[si]['pre'] [0,idxs].mean()
             idxs = np.argwhere(~np.isnan(metricsSeqAll[si]['rec'][0,:nJoints]))
             metricsSeqAll[si]['rec'][0,nJoints]  = metricsSeqAll[si]['rec'] [0,idxs].mean()
+            idxs = np.argwhere(~np.isnan(metricsSeqAll[si]['num_misses'][0,:nJoints]))
+            metricsSeqAll[si]['num_misses'][0,nJoints] = metricsSeqAll[si]['num_misses'][0, idxs].sum()
+            idxs = np.argwhere(~np.isnan(metricsSeqAll[si]['num_switches'][0,:nJoints]))
+            metricsSeqAll[si]['num_switches'][0,nJoints] = metricsSeqAll[si]['num_switches'][0, idxs].sum()
+            idxs = np.argwhere(~np.isnan(metricsSeqAll[si]['num_false_positives'][0,:nJoints]))
+            metricsSeqAll[si]['num_false_positives'][0,nJoints] = metricsSeqAll[si]['num_false_positives'][0, idxs].sum()
 
             metricsSeq = metricsSeqAll[si].copy()
             metricsSeq['mota'] = metricsSeq['mota'].flatten().tolist()
             metricsSeq['motp'] = metricsSeq['motp'].flatten().tolist()
             metricsSeq['pre'] = metricsSeq['pre'].flatten().tolist()
             metricsSeq['rec'] = metricsSeq['rec'].flatten().tolist()
+            metricsSeq['num_misses'] = metricsSeq['num_misses'].flatten().tolist()
+            metricsSeq['num_switches'] = metricsSeq['num_switches'].flatten().tolist()
+            metricsSeq['num_false_positives'] = metricsSeq['num_false_positives'].flatten().tolist()
             metricsSeq['names'] = names
 
             filename = outputDir + '/' + seqName + '_MOT_metrics.json'
-            print('saving results to', filename)
             eval_helpers.writeJson(metricsSeq,filename)
 
     # compute final metrics per joint for all sequences
@@ -158,6 +166,9 @@ def computeMetrics(gtFramesAll, motAll, outputDir, bSaveAll, bSaveSeq):
                                                 metricsMidAll['num_switches'][0,i] +
                                                 numFP) /
                                                 numObj)
+        metricsFinAll['num_misses'][0, i] = metricsMidAll['num_misses'][0,i]
+        metricsFinAll['num_switches'][0, i] = metricsMidAll['num_switches'][0,i]
+        metricsFinAll['num_false_positives'][0, i] = numFP
         numDet = metricsMidAll['num_detections'][0,i]
         s = metricsMidAll['sumD'][0,i]
         if (numDet == 0 or np.isnan(s)):
@@ -183,6 +194,12 @@ def computeMetrics(gtFramesAll, motAll, outputDir, bSaveAll, bSaveSeq):
     metricsFinAll['pre'][0,nJoints]  = metricsFinAll['pre'] [0,idxs].mean()
     idxs = np.argwhere(~np.isnan(metricsFinAll['rec'][0,:nJoints]))
     metricsFinAll['rec'][0,nJoints]  = metricsFinAll['rec'] [0,idxs].mean()
+    idxs = np.argwhere(~np.isnan(metricsFinAll['num_misses'][0, :nJoints]))
+    metricsFinAll['num_misses'][0, nJoints] = metricsFinAll['num_misses'][0, idxs].sum()
+    idxs = np.argwhere(~np.isnan(metricsFinAll['num_switches'][0, :nJoints]))
+    metricsFinAll['num_switches'][0, nJoints] = metricsFinAll['num_switches'][0, idxs].sum()
+    idxs = np.argwhere(~np.isnan(metricsFinAll['num_false_positives'][0, :nJoints]))
+    metricsFinAll['num_false_positives'][0, nJoints] = metricsFinAll['num_false_positives'][0, idxs].sum()
 
     if (bSaveAll):
         metricsFin = metricsFinAll.copy()
@@ -190,16 +207,18 @@ def computeMetrics(gtFramesAll, motAll, outputDir, bSaveAll, bSaveSeq):
         metricsFin['motp'] = metricsFin['motp'].flatten().tolist()
         metricsFin['pre'] = metricsFin['pre'].flatten().tolist()
         metricsFin['rec'] = metricsFin['rec'].flatten().tolist()
+        metricsFin['num_misses'] = metricsFin['num_misses'].flatten().tolist()
+        metricsFin['num_switches'] = metricsFin['num_switches'].flatten().tolist()
+        metricsFin['num_false_positives'] = metricsFin['num_false_positives'].flatten().tolist()
         metricsFin['names'] = names
 
         filename = outputDir + '/total_MOT_metrics.json'
-        print('saving results to', filename)
         eval_helpers.writeJson(metricsFin,filename)
 
     return metricsFinAll
 
 
-def evaluateTracking(gtFramesAll, prFramesAll, outputDir, saveAll=True, saveSeq=False):
+def evaluateTracking(gtFramesAll, prFramesAll, outputDir=".", saveAll=True, saveSeq=False):
 
     distThresh = 0.5
     # assign predicted poses to GT poses
